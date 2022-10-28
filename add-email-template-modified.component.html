@@ -1,0 +1,123 @@
+<app-base-template (modal)="openModal(content)" (tabledata)="getTableData()" [displayData]="displayData"
+  [nextOffset]="nextOffset" [previousOffset]="previousOffset" (offset)="getData($event)"
+  (pageSize)="onPageSizeChange($event)" [pageNo]="page_no" [totalPage]="totalPage" [dataLoaded]="dataLoaded">
+</app-base-template>
+<ng-template #content let-c="close" let-d="dismiss">
+  <div class="modal-header modalTitle">
+    <div class="modal-title">Add Email template</div>
+
+  </div>
+  <div class="modal-body">
+    <div class="none" [ngClass]="{'inputError':isError}">{{errorMessage}}</div>
+    <div class="form-group">
+      <mat-radio-group aria-label="Select an option" [(ngModel)]="selectedActionValue" (change)="onChnageActionType()">
+        <mat-radio-button class="emailtempradiobtn" [value]="1">Status</mat-radio-button>
+        <mat-radio-button class="emailtempradiobtn" [value]="2">Activity</mat-radio-button>
+      </mat-radio-group>
+    </div>
+    <div class="form-group">
+      <select class="custom-select mr-sm-2 radius-0 font-13" [(ngModel)]="ticketSelected"
+        (change)="onTicketChange($event.target.selectedIndex)">
+        <option *ngFor="let ticket of tickets" [value]="ticket.id">{{ticket.name}}</option>
+      </select>
+    </div>
+    <div *ngIf="selectedActionValue === 1" class="form-group">
+      <!-- <label class="font-16 font-weight-bold" [hidden]="lebelHidden">Ticket Status :</label>
+            <mat-checkbox class ="font-13" *ngFor="let status of ticket_status" value="{{status.id}}"
+                          [(ngModel)]="status.checked">{{status.status}}</mat-checkbox> -->
+      <select class="custom-select mr-sm-2 radius-0 font-13" [(ngModel)]="ststusSelected">
+        <option *ngFor="let status of ticket_status" [value]="status.id">{{status.status}}</option>
+      </select>
+    </div>
+    <div *ngIf="selectedActionValue === 2" class="form-group">
+      <select class="custom-select mr-sm-2 radius-0 font-13" [(ngModel)]="selectedActivity"
+        (change)="onActivityChange($event.target.selectedIndex)">
+        <option *ngFor="let ticketActivity of ticketActivityList" [value]="ticketActivity.id">
+          {{ticketActivity.activity_desc}}</option>
+      </select>
+    </div>
+
+    <!--<label class="font-13">Support group</label>-->
+    <!--<div class="form-group font-13 box">-->
+    <!--<mat-checkbox *ngFor="let group of support_group" value="{{group.id}}" [(ngModel)]="group.checked">{{group.name}}</mat-checkbox>-->
+    <!--</div>-->
+
+    <!--<label class="font-13">Category</label>-->
+    <!--<div class="form-group font-13 box">-->
+    <!--<mat-checkbox *ngFor="let category of categories" value="{{category.id}}" [(ngModel)]="category.checked">{{category.name}}</mat-checkbox>-->
+    <!--</div>-->
+
+    <div class="form-group">
+      <select class="custom-select mr-sm-2 radius-0 font-13" [(ngModel)]="categorySelected">
+        <option *ngFor="let category of categories" [value]="category.id">{{category.name}}</option>
+      </select>
+    </div>
+
+
+    <div class="form-group">
+      <textarea class="form-control radius-0 font-13" [(ngModel)]="subject" placeholder="Subject" required></textarea>
+    </div>
+
+    <ck-editor name="editor1" [(ngModel)]="editorValue" skin="moono-lisa" language="en" [fullPage]="true"
+      placeholder="Template body">
+    </ck-editor>
+
+
+  <div>ADD SMS</div>  
+    <div class="modal-body">
+  
+      <div class="none" [ngClass]="{'inputError':isError}">{{errorMessage}}</div>
+      <div class="form-group">
+        <textarea class="form-control radius-0 font-13" [(ngModel)]="sms_template_id" placeholder="SMS Id"
+          required></textarea>
+      </div>
+
+      <div class="form-group">
+        <textarea class="form-control radius-0 font-13" [(ngModel)]="sms_template" placeholder="SMS Message"
+          required></textarea>
+      </div>
+    </div>
+  </div>
+
+  <div class="modal-footer pad-8">
+    <button type="button" class="btn btn-success radius-0" (click)="save()">Save</button>
+    <button type="button" class="btn btn-danger radius-0" (click)="c()">Cancel</button>
+  </div>
+</ng-template>
+
+
+<ng-template #content1 let-c="close" let-d="dismiss">
+  <div class="modal-header modalTitle">
+    <div class="modal-title">Edit Email template</div>
+
+  </div>
+  <div class="modal-body">
+    <div class="none" [ngClass]="{'inputError':isError}">{{errorMessage}}</div>
+    <div class="form-group">
+      <textarea class="form-control radius-0 font-13" [(ngModel)]="subject" placeholder="Subject" required></textarea>
+    </div>
+
+    <ck-editor name="editor1" [(ngModel)]="editorValue" skin="moono-lisa" language="en" [fullPage]="true"
+      placeholder="Template body"></ck-editor>
+  </div>
+  <div class="modal-header modalTitle">
+    <div class="modal-title">Edit SMS template</div>
+  </div>
+  <div class="modal-body">
+    <div class="none" [ngClass]="{'inputError':isError}">{{errorMessage}}</div>
+    <div class="form-group">
+      <textarea class="form-control radius-0 font-13" [(ngModel)]="sms_template_id" placeholder="SMS Id"
+        required></textarea>
+    </div>
+
+    <ck-editor name="text" [(ngModel)]="sms_template" skin="moono-lisa" language="en" [fullPage]="true"
+      placeholder="SMS body"></ck-editor>
+  </div>
+
+  <div class="modal-footer pad-8">
+    <button type="button" class="btn btn-success radius-0" (click)="update()">Update</button>
+    <button type="button" class="btn btn-danger radius-0" (click)="c()">Cancel</button>
+  </div>
+</ng-template>
+
+<notifier-container></notifier-container>
